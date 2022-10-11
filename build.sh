@@ -23,7 +23,7 @@ function configure_device() {
     # uses the 'goldfish' name.
     if [ -f device/*/$DEVICE/download-blobs.sh ] ; then
         important_files="device/*/$DEVICE/download-blobs.sh"
-        script="cd device/*/$DEVICE && ./download-blobs.sh"
+        script="cd device/*/$DEVICE && DEVICE_NAME=$DEVICE ./download-blobs.sh"
     elif [ -f device/*/$DEVICE/extract-files.sh ] ; then
         important_files="device/*/$DEVICE/extract-files.sh"
         script="cd device/*/$DEVICE && ./extract-files.sh"
