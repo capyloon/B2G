@@ -2,14 +2,16 @@
 
 set -e
 
+LINUX_BIN=bluejay_dist/bluejay/linux-x86/bin
+
 rm -rf bluejay_dist
 mkdir -p bluejay_dist/bluejay/images
-mkdir -p bluejay_dist/bluejay/bin
+mkdir -p ${LINUX_BIN}
 
 cp out/target/product/bluejay/*.img bluejay_dist/bluejay/images
 cp out/target/product/bluejay/android-info.txt bluejay_dist/bluejay/images
-cp out/host/linux-x86/bin/fastboot bluejay_dist/bluejay/bin
-cp out/host/linux-x86/bin/adb bluejay_dist/bluejay/bin
+cp out/host/linux-x86/bin/fastboot ${LINUX_BIN}
+cp out/host/linux-x86/bin/adb ${LINUX_BIN}
 
 cat << EOF > bluejay_dist/bluejay/flash.sh
 #!/bin/sh
@@ -32,7 +34,11 @@ cat << EOF > bluejay_dist/bluejay/flash.sh
 set -e
 
 IMG=./images
-PATH=./bin:\$PATH
+
+HOST_OS=\$(uname -s)
+if [ "\$HOST_OS" != "Darwin" ]; then
+    PATH=./linux-x86/bin:\$PATH
+fi
 
 # Make sure we use an up to date version of fastboot.
 # Copied from the factory install 'flash-all.sh' script.
