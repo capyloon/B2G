@@ -93,7 +93,7 @@ The `bluejay` build is based on Android 13, which uses the Android NDK r25b. Her
 - Make sure your device is up to date: ***Read https://developers.google.com/android/images#updating_pixel_6_pixel_6_pro_and_pixel_6a_devices_to_android_13_for_the_first_time first!***
 - Download the new patched NDK from https://bafybeics7ghfvyvjaumpr6j7vvn47d62yi5o4iaa7do3zbeyhkrjkanxia.ipfs.cf-ipfs.com/android-ndk-0-linux-x86_64.zip and install it in your `$HOME/.mozbuild` directory.
 - Install protoc from https://github.com/protocolbuffers/protobuf/releases (eg. protoc-21.7-linux-x86_64.zip).
-- Install Rust (https://rustup.rs/) and make sure you have the 1.63 toolchain installed.
+- Install Rust (https://rustup.rs/) and make sure you have the 1.63 toolchain installed with the `aarch64-linux-android` target.
 - Run this command to workaround a Rust toolchain issue (see https://github.com/godot-rust/godot-rust/pull/920/files):
 ```shell
 find -L ${BUILD_WITH_NDK_DIR} -name libunwind.a -execdir sh -c 'echo "INPUT(-lunwind)" > libgcc.a' \;)
