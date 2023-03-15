@@ -180,9 +180,9 @@ index 512c7cd..b2c902b 100644
 6. The build will end up in `out/dist`.
 
 
-## <span id="building_on_A13"> Tips on building B2G which is base on Android 13 </span>
+## <span id="building_on_A13"> Note on building B2G which is base on Android 13 </span>
 
-The `bluejay` and the `B2G-GSI A13` build is based on Android 13, which use the Android NDK r25b. Here are the steps to follow for this device:
+The `bluejay` and the `B2G-GSI A13` build is based on Android 13, which use the Android NDK r25b. Please set up the environment for the following steps:
 - Download the new patched NDK from https://bafybeics7ghfvyvjaumpr6j7vvn47d62yi5o4iaa7do3zbeyhkrjkanxia.ipfs.cf-ipfs.com/android-ndk-0-linux-x86_64.zip and install it in your `$HOME/.mozbuild` directory.
 - Install protoc from https://github.com/protocolbuffers/protobuf/releases (eg. protoc-21.7-linux-x86_64.zip).
 - Install Rust (https://rustup.rs/) and make sure you have the 1.63 toolchain installed with the `aarch64-linux-android` target.
