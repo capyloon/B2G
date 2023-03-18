@@ -104,7 +104,10 @@ case "$1" in
 	;;
 "b2g_gsi")
 	repo_sync gsi
-	;;	
+	;;
+"b2g_gsi_13")
+	repo_sync gsi-13
+	;;
 *)
 	echo "Usage: $0 [-cdflnq] [-j <jobs>] [--force-sync] (device name)"
 	echo "Flags are passed through to |./repo sync|."
@@ -116,6 +119,7 @@ case "$1" in
 	echo - onyx  \(OnePlus X\)
 	echo - bluejay \(Google Pixel 6a\)
 	echo - b2g_gsi \(B2G Generic System Images\)
+	echo - b2g_gsi_13 \(B2G Generic System Images \(A13\)\)
 	exit -1
 	;;
 esac

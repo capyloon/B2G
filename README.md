@@ -72,8 +72,22 @@ At boot time, you might need `adb shell setenforce 0` for B2G to boot (flash_sar
   
 If need to output a zip ROM file, you can use `./build.sh dist DIST_DIR=dist_output` instead of `./build.sh` in step 5.
 
+
+## Pixel 6a (bluejay)
+
+Here are the steps to follow for this device:
+- Make sure your device is up to date: ***Read https://developers.google.com/android/images#updating_pixel_6_pixel_6_pro_and_pixel_6a_devices_to_android_13_for_the_first_time first!***
+- The `bluejay` build is based on Android 13, which uses the Android NDK r25b and details can be found [here](#building_on_A13)
+- Configure your build with `./config.sh bluejay`
+- Build with `./build.sh <target>`
+
+To flash your build, you can create a distributable archive with `./create_bluejay_dist.sh` and run the `flash.sh` script it contains. This is Linux-only for now.
+
 ## B2G Generic System Images (B2G-GSI) 
-More [detail](https://github.com/phhusson/treble_experimentations/wiki) of which device is supported and which type for your device.  
+
+More [detail](https://github.com/phhusson/treble_experimentations/wiki) of which device is supported and which type for your device. 
+
+### Build B2G-GSI base on Android 10 
 1. Fetch the code: `REPO_INIT_FLAGS="--depth=1" ./config.sh b2g_gsi`
 2. Setup your environment to fetch the custom NDK: `export LOCAL_NDK_BASE_URL='ftp://ftp.kaiostech.com/ndk/android-ndk'`
 3. Install Gecko dependencies: `cd gecko && ./mach bootstrap`, choose option 1 (Boot2Gecko).
@@ -87,21 +101,12 @@ More [detail](https://github.com/phhusson/treble_experimentations/wiki) of which
 
 5. Flash: Follow the steps from [click it](https://source.android.com/setup/build/gsi#flashing-gsis) or use the `./create_gsi_dist.sh` script to create a self-contained archive with the image and flashing tools.
 
-## Pixel 6a (bluejay)
+### Build B2G-GSI base on Android 13
+1. Preparations：Download the Android NDK r25b and install Rust and `protoc`, and details can be found [here](#building_on_A13)
+2. Fetch the code: `REPO_INIT_FLAGS="--depth=1" ./config.sh b2g_gsi-13`
+3. Build it: `./build-gsi.sh gsi_arm64_ab systemimage`
+4. Flash: Follow the steps from [click it](https://source.android.com/setup/build/gsi#flashing-gsis) or use the `./create_gsi_dist.sh` script to create a self-contained archive with the image and flashing tools.
 
-The `bluejay` build is based on Android 13, which uses the Android NDK r25b. Here are the steps to follow for this device:
-- Make sure your device is up to date: ***Read https://developers.google.com/android/images#updating_pixel_6_pixel_6_pro_and_pixel_6a_devices_to_android_13_for_the_first_time first!***
-- Download the new patched NDK from https://bafybeics7ghfvyvjaumpr6j7vvn47d62yi5o4iaa7do3zbeyhkrjkanxia.ipfs.cf-ipfs.com/android-ndk-0-linux-x86_64.zip and install it in your `$HOME/.mozbuild` directory.
-- Install protoc from https://github.com/protocolbuffers/protobuf/releases (eg. protoc-21.7-linux-x86_64.zip).
-- Install Rust (https://rustup.rs/) and make sure you have the 1.63 toolchain installed with the `aarch64-linux-android` target.
-- Run this command to workaround a Rust toolchain issue (see https://github.com/godot-rust/godot-rust/pull/920/files):
-```shell
-find -L ${BUILD_WITH_NDK_DIR} -name libunwind.a -execdir sh -c 'echo "INPUT(-lunwind)" > libgcc.a' \;)
-```
-- Configure your build with `./config.sh bluejay`
-- Build with `./build.sh <target>`
-
-To flash your build, you can create a distributable archive with `./create_bluejay_dist.sh` and run the `flash.sh` script it contains. This is Linux-only for now.
 
 # Re-building your own NDK
 
@@ -173,3 +178,15 @@ index 512c7cd..b2c902b 100644
 5. Build the ndk:
 `python ndk/checkbuild.py --no-build-tests`
 6. The build will end up in `out/dist`.
+
+
+## <span id="building_on_A13"> Note on building B2G which is base on Android 13 </span>
+
+The `bluejay` and the `B2G-GSI A13` build is based on Android 13, which use the Android NDK r25b. Please set up the environment for the following steps:
+- Download the new patched NDK from https://bafybeics7ghfvyvjaumpr6j7vvn47d62yi5o4iaa7do3zbeyhkrjkanxia.ipfs.cf-ipfs.com/android-ndk-0-linux-x86_64.zip and install it in your `$HOME/.mozbuild` directory.
+- Install protoc from https://github.com/protocolbuffers/protobuf/releases (eg. protoc-21.7-linux-x86_64.zip).
+- Install Rust (https://rustup.rs/) and make sure you have the 1.63 toolchain installed with the `aarch64-linux-android` target.
+- Run this command to workaround a Rust toolchain issue (see https://github.com/godot-rust/godot-rust/pull/920/files):
+  ```shell
+  find -L ${BUILD_WITH_NDK_DIR} -name libunwind.a -execdir sh -c 'echo "INPUT(-lunwind)" > libgcc.a' \;)
+  ```
