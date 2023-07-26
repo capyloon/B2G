@@ -146,10 +146,10 @@ REPO_REV = os.environ.get('REPO_REV')
 if not REPO_REV:
   REPO_REV = 'stable'
 # URL to file bug reports for repo tool issues.
-BUG_URL = 'https://bugs.chromium.org/p/gerrit/issues/entry?template=Repo+tool+issue'
+BUG_URL = 'https://issues.gerritcodereview.com/issues/new?component=1370071'
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 29)
+VERSION = (2, 35)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
@@ -265,7 +265,8 @@ else:
   urllib.error = urllib2
 
 
-home_dot_repo = os.path.expanduser('~/.repoconfig')
+repo_config_dir = os.getenv('REPO_CONFIG_DIR', os.path.expanduser('~'))
+home_dot_repo = os.path.join(repo_config_dir, '.repoconfig')
 gpg_dir = os.path.join(home_dot_repo, 'gnupg')
 
 
@@ -447,8 +448,7 @@ def run_command(cmd, **kwargs):
     except UnicodeError:
       print('repo: warning: Invalid UTF-8 output:\ncmd: %r\n%r' % (cmd, output),
             file=sys.stderr)
-      # TODO(vapier): Once we require Python 3, use 'backslashreplace'.
-      return output.decode('utf-8', 'replace')
+      return output.decode('utf-8', 'backslashreplace')
 
   # Run & package the results.
   proc = subprocess.Popen(cmd, **kwargs)
@@ -506,10 +506,10 @@ def gitc_parse_clientdir(gitc_fs_path):
   """Parse a path in the GITC FS and return its client name.
 
   Args:
-    gitc_fs_path: A subdirectory path within the GITC_FS_ROOT_DIR.
+      gitc_fs_path: A subdirectory path within the GITC_FS_ROOT_DIR.
 
   Returns:
-    The GITC client name.
+      The GITC client name.
   """
   if gitc_fs_path == GITC_FS_ROOT_DIR:
     return None
@@ -942,14 +942,14 @@ def resolve_repo_rev(cwd, committish):
   * xxx: Branch or tag or commit.
 
   Args:
-    cwd: The git checkout to run in.
-    committish: The REPO_REV argument to resolve.
+      cwd: The git checkout to run in.
+      committish: The REPO_REV argument to resolve.
 
   Returns:
-    A tuple of (remote ref, commit) as makes sense for the committish.
-    For branches, this will look like ('refs/heads/stable', <revision>).
-    For tags, this will look like ('refs/tags/v1.0', <revision>).
-    For commits, this will be (<revision>, <revision>).
+      A tuple of (remote ref, commit) as makes sense for the committish.
+      For branches, this will look like ('refs/heads/stable', <revision>).
+      For tags, this will look like ('refs/tags/v1.0', <revision>).
+      For commits, this will be (<revision>, <revision>).
   """
   def resolve(committish):
     ret = run_git('rev-parse', '--verify', '%s^{commit}' % (committish,),
@@ -1104,7 +1104,7 @@ class Requirements(object):
     """Initialize.
 
     Args:
-      requirements: A dictionary of settings.
+        requirements: A dictionary of settings.
     """
     self.requirements = requirements
 
