@@ -188,5 +188,5 @@ The `bluejay` and the `B2G-GSI A13` build is based on Android 13, which use the 
 - Install Rust (https://rustup.rs/) and make sure you have the 1.63 toolchain installed with the `aarch64-linux-android` target.
 - Run this command to workaround a Rust toolchain issue (see https://github.com/godot-rust/godot-rust/pull/920/files):
   ```shell
-  find -L ${BUILD_WITH_NDK_DIR} -name libunwind.a -execdir sh -c 'echo "INPUT(-lunwind)" > libgcc.a' \;)
+  find -L ${BUILD_WITH_NDK_DIR} -name libunwind.a -execdir sh -c 'echo "INPUT(-lunwind)" > libgcc.a' \;
   ```
