@@ -35,7 +35,7 @@ You can read more about it on the following page :
 # Building and running the android-10 emulator x86_64
 
 1. Fetch the code: `REPO_INIT_FLAGS="--depth=1" ./config.sh emulator-10-x86_64`
-2. Setup your environment to fetch the custom NDK: `export LOCAL_NDK_BASE_URL='ftp://ftp.kaiostech.com/ndk/android-ndk'`
+2. Setup your environment to fetch the custom NDK: `export LOCAL_NDK_BASE_URL='https://packages.preprod.kaiostech.com/ndk/android-ndk'`
 3. Install Gecko dependencies: `cd gecko && ./mach bootstrap`, choose option 1 (Boot2Gecko).
 4. Build: `./build.sh`
 5. Run the emulator: `source build/envsetup.sh && lunch aosp_arm-userdebug && emulator -writable-system -selinux permissive`
